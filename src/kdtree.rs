@@ -8,6 +8,27 @@ use crate::util;
 
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[derive(Clone, Debug)]
+/// A KdTree is a space-partitioning data structure for organizing points in a k-dimensional space.
+///
+/// # Type Parameters
+///
+/// * `A` - The type of the coordinates of the points.
+/// * `T` - The type of the data stored in the tree, which must implement `PartialEq`.
+/// * `U` - A type that can be referenced as a slice of `A` and must implement `PartialEq`.
+///
+/// # Fields
+///
+/// * `left` - The left child of the node, which is an `Option` containing a boxed `KdTree`.
+/// * `right` - The right child of the node, which is an `Option` containing a boxed `KdTree`.
+/// * `dimensions` - The number of dimensions in the space.
+/// * `capacity` - The maximum number of points that can be stored in a leaf node.
+/// * `size` - The current number of points in the tree.
+/// * `min_bounds` - The minimum bounds of the space, stored as a boxed slice of `A`.
+/// * `max_bounds` - The maximum bounds of the space, stored as a boxed slice of `A`.
+/// * `split_value` - The value at which the space is split at this node, which is an `Option` containing `A`.
+/// * `split_dimension` - The dimension along which the space is split at this node, which is an `Option` containing `usize`.
+/// * `points` - The points stored in this node if it is a leaf, which is an `Option` containing a `Vec` of `U`.
+/// * `bucket` - The data associated with the points in this node if it is a leaf, which is an `Option` containing a `Vec` of `T`.
 pub struct KdTree<A, T: std::cmp::PartialEq, U: AsRef<[A]> + std::cmp::PartialEq> {
     // node
     left: Option<Box<KdTree<A, T, U>>>,
